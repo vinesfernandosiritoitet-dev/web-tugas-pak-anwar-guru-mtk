@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dashboard Pembelajaran Fungsi Matematika</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+:root {
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --ink-primary: #0f172a;
+  --ink-secondary: #475569;
+  --ink-muted: #94a3b8;
+  --border: #e2e8f0;
+  
+  --brand: #3b82f6;
+  --brand-light: #eff6ff;
+  --brand-hover: #2563eb;
+  
+  --blue: #2563eb;
+  --emerald: #10b981;
+  --rose: #f43f5e;
+  --amber: #f59e0b;
+  --purple: #8b5cf6;
+  
+  --radius-lg: 16px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+  
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+  
+  box-sizing: border-box;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f172a;
+    --card: #1e293b;
+    --ink-primary: #f8fafc;
+    --ink-secondary: #cbd5e1;
+    --ink-muted: #64748b;
+    --border: #334155;
+    --brand-light: rgba(59, 130, 246, 0.15);
+  }
+}
+
+*, *::before, *::after { box-sizing: inherit; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink-primary);
+  font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ==========================================
+   1. LOADING PAGE (SPLASH SCREEN)
+========================================== */
+#loading-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+#loading-screen.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid var(--border);
+  border-top-color: var(--brand);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-text {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink-primary);
+}
+
+.loading-sub {
+  font-size: 13px;
+  color: var(--ink-muted);
+  margin-top: 4px;
+}
+
+/* ==========================================
+   2. HALAMAN LOGIN
+========================================== */
+#login-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: radial-gradient(circle at top, var(--brand-light), var(--bg));
+}
+
+.login-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 36px 32px;
+  width: 100%;
+  max-width: 420px;
+  box-shadow: var(--shadow-lg);
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.login-header h2 {
+  font-size: 24px;
+  font-weight: 800;
+  margin: 0 0 6px;
+  color: var(--ink-primary);
+}
+
+.login-header p {
+  font-size: 14px;
+  color: var(--ink-secondary);
+  margin: 0;
+}
+
+/* Role Selector Tabs */
+.role-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  background: var(--bg);
+  padding: 4px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  margin-bottom: 24px;
+}
+
+.role-btn {
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 8px 12px;
+  border: none;
+  background: transparent;
+  color: var(--ink-secondary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.role-btn.active {
+  background: var(--card);
+  color: var(--brand);
+  box-shadow: var(--shadow-sm);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-secondary);
+}
+
+.form-group input {
+  font: inherit;
+  font-size: 14px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--ink-primary);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.form-group input:focus {
+  border-color: var(--brand);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.btn-submit {
+  width: 100%;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 12px;
+  border: none;
+  background: var(--brand);
+  color: #ffffff;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.2s ease;
+  margin-top: 8px;
+}
+
+.btn-submit:hover {
+  background: var(--brand-hover);
+}
+
+.login-err {
+  color: var(--rose);
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 12px;
+  text-align: center;
+  min-height: 20px;
+}
+
+/* ==========================================
+   3. APP MAIN LAYOUT (TAMPILAN UTAMA)
+========================================== */
+#app-screen {
+  display: none; /* Sembunyi sebelum login */
+}
+
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 20px 64px;
+}
+
+header {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+@media (min-width: 768px) {
+  header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.brand-title h1 {
+  margin: 0;
+  font-size: clamp(22px, 3vw, 30px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--ink-primary);
+}
+
+.brand-title p {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: var(--ink-secondary);
+}
+
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.badge-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  background: var(--brand-light);
+  color: var(--brand);
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.btn-logout {
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--rose);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-logout:hover {
+  background: rgba(244, 63, 94, 0.1);
+}
+
+/* Navigation Bar */
+nav {
+  display: flex;
+  gap: 8px;
+  padding: 6px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  overflow-x: auto;
+  margin-bottom: 28px;
+}
+
+nav button {
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 18px;
+  border: none;
+  background: transparent;
+  color: var(--ink-secondary);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+nav button:hover {
+  color: var(--ink-primary);
+  background: var(--bg);
+}
+
+nav button[aria-current="true"] {
+  background: var(--brand);
+  color: #ffffff;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
+}
+
+/* View Sections */
+.view { display: none; }
+.view.on { display: block; }
+
+.section-header {
+  margin-bottom: 20px;
+}
+
+.section-header h2 {
+  font-size: 22px;
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+
+.section-header p {
+  margin: 0;
+  color: var(--ink-secondary);
+  font-size: 14px;
+}
+
+/* Dashboard Cards Grid */
+.dash-hero {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+  padding: 28px;
+  border-radius: var(--radius-lg);
+  margin-bottom: 28px;
+  box-shadow: var(--shadow-md);
+}
+
+.dash-hero h2 {
+  margin: 0 0 8px;
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.dash-hero p {
+  margin: 0;
+  opacity: 0.9;
+  font-size: 14px;
+  max-width: 600px;
+}
+
+.grid-dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.dash-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.dash-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--brand);
+}
+
+.dash-card h3 {
+  margin: 0 0 6px;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.dash-card p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--ink-secondary);
+}
+
+.dash-card .card-footer {
+  margin-top: 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--brand);
+}
+
+/* Admin Specific Panel */
+.admin-only {
+  display: none; /* Khusus admin */
+}
+
+/* Panel & Tools */
+.panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 20px;
+}
+
+.row-inputs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.input-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.input-field label {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink-secondary);
+}
+
+.input-field input {
+  font: inherit;
+  font-size: 14px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--ink-primary);
+  outline: none;
+}
+
+canvas {
+  width: 100%;
+  height: 360px;
+  display: block;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.legend {
+  display: flex;
+  gap: 16px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 12px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.err {
+  color: var(--rose);
+  font-size: 13px;
+  min-height: 18px;
+  margin: 0 0 8px;
+}
+
+.grid-results {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.res-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  background: var(--bg);
+}
+
+.res-card small {
+  color: var(--ink-muted);
+  font-size: 12px;
+  display: block;
+}
+
+.res-card b {
+  font-size: 18px;
+  color: var(--ink-primary);
+}
+
+details {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  margin-bottom: 10px;
+  background: var(--card);
+}
+
+summary {
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+details p {
+  margin: 10px 0 0;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  color: var(--ink-secondary);
+  font-size: 14px;
+}
+</style>
+</head>
+<body>
+
+<!-- 1. LOADING SCREEN -->
+<div id="loading-screen">
+  <div class="spinner"></div>
+  <div class="loading-text">Memuat Sistem Fungsi Matematika...</div>
+  <div class="loading-sub">Mohon tunggu sebentar</div>
+</div>
+
+<!-- 2. LOGIN SCREEN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-header">
+      <h2>Portal Masuk</h2>
+      <p>Silakan pilih jenis akun untuk melanjutkan</p>
+    </div>
+
+    <!-- Pilihan Peran (Role) -->
+    <div class="role-tabs">
+      <button type="button" class="role-btn active" onclick="setRole('siswa')">Siswa</button>
+      <button type="button" class="role-btn" onclick="setRole('admin')">Admin / Guru</button>
+    </div>
+
+    <form id="login-form" onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label id="label-username">NISN / Username Siswa</label>
+        <input type="text" id="username" placeholder="Masukkan ID/Username" required autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label>Kata Sandi</label>
+        <input type="password" id="password" placeholder="••••••••" required>
+      </div>
+
+      <button type="submit" class="btn-submit">Masuk ke Dashboard</button>
+      <div id="login-err" class="login-err"></div>
+    </form>
+  </div>
+</div>
+
+<!-- 3. MAIN APP SCREEN (DASHBOARD UTAMA) -->
+<div id="app-screen">
+  <div class="wrap">
+    <header>
+      <div class="brand-title">
+        <h1>Dashboard Pembelajaran Fungsi</h1>
+        <p>Aplikasi Eksplorasi Visual Matematika Interaktif</p>
+      </div>
+      <div class="user-profile">
+        <span id="user-badge" class="badge-tag">Siswa</span>
+        <button class="btn-logout" onclick="handleLogout()">Keluar</button>
+      </div>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav aria-label="Menu Utama">
+      <button data-v="dash" aria-current="true">Dashboard</button>
+      <button data-v="materi">Materi</button>
+      <button data-v="grafik">Plotter Grafik</button>
+      <button data-v="kalk">Kalkulator</button>
+      <button data-v="soal">Latihan Soal</button>
+      <button data-v="admin" class="admin-only">Panel Admin</button>
+    </nav>
+
+    <!-- DASHBOARD VIEW -->
+    <section id="dash" class="view on">
+      <div class="dash-hero">
+        <h2 id="welcome-msg">Selamat Datang!</h2>
+        <p>Gunakan dashboard ini untuk mempelajari konsep fungsi, melihat grafik Kartesius secara interaktif, dan melatih pemahamanmu.</p>
+      </div>
+
+      <div class="section-header">
+        <h2>Pilih Modul Pembelajaran</h2>
+        <p>Materi pembelajaran lengkap sesuai kurikulum</p>
+      </div>
+
+      <div class="grid-dashboard">
+        <div class="dash-card" data-go="materi">
+          <h3>Fungsi Linear & Kuadrat</h3>
+          <p>Mempelajari bentuk garis lurus dan parabola secara visual.</p>
+          <div class="card-footer">Pelajari &rarr;</div>
+        </div>
+        <div class="dash-card" data-go="materi">
+          <h3>Fungsi Rasional</h3>
+          <p>Eksplorasi domain terdefinisi dan garis asimtot kurva.</p>
+          <div class="card-footer">Pelajari &rarr;</div>
+        </div>
+        <div class="dash-card" data-go="materi">
+          <h3>Komposisi & Invers</h3>
+          <p>Pemetaan (fog)(x) serta langkah mencari balikkan fungsi.</p>
+          <div class="card-footer">Pelajari &rarr;</div>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <h2>Alat Interaktif</h2>
+        <p>Fitur praktis untuk membantu penyelesaian soal</p>
+      </div>
+
+      <div class="grid-dashboard">
+        <div class="dash-card" data-go="grafik">
+          <h3>Plotter Grafik</h3>
+          <p>Plot hingga 3 fungsi pada sumbu Kartesius.</p>
+          <div class="card-footer">Buka Alat &rarr;</div>
+        </div>
+        <div class="dash-card" data-go="kalk">
+          <h3>Kalkulator Komposisi</h3>
+          <p>Hitung evaluasi nilai fungsi secara tepat.</p>
+          <div class="card-footer">Buka Alat &rarr;</div>
+        </div>
+        <div class="dash-card" data-go="soal">
+          <h3>Latihan Soal</h3>
+          <p>Uji pemahaman dengan pembahasan terstruktur.</p>
+          <div class="card-footer">Buka Soal &rarr;</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MATERI VIEW -->
+    <section id="materi" class="view">
+      <div class="section-header">
+        <h2>Ringkasan Materi Fungsi</h2>
+        <p>Konsep-konsep utama yang perlu dikuasai</p>
+      </div>
+
+      <div class="panel">
+        <h3>1. Fungsi Linear: f(x) = ax + b</h3>
+        <p>Grafik berupa garis lurus dengan kemiringan gradien <b>a</b> dan titik potong sumbu Y di <b>(0, b)</b>.</p>
+      </div>
+
+      <div class="panel">
+        <h3>2. Fungsi Kuadrat: f(x) = ax² + bx + c</h3>
+        <p>Grafik berbentuk parabola. Titik puncak berada di koordinat <b>(-b/2a, -D/4a)</b>.</p>
+      </div>
+
+      <div class="panel">
+        <h3>3. Komposisi Fungsi: (f ∘ g)(x) = f(g(x))</h3>
+        <p>Memasukkan seluruh hasil ekspresi fungsi g(x) ke dalam variabel x pada fungsi f(x).</p>
+      </div>
+    </section>
+
+    <!-- GRAFIK VIEW -->
+    <section id="grafik" class="view">
+      <div class="section-header">
+        <h2>Plotter Grafik Fungsi</h2>
+        <p>Ketik fungsi matematika di bawah ini untuk melihat bentuk kurvanya</p>
+      </div>
+
+      <div class="panel">
+        <div class="row-inputs">
+          <div class="input-field">
+            <label style="color:var(--blue)">f(x) =</label>
+            <input id="gf" value="x + 3" autocomplete="off">
+          </div>
+          <div class="input-field">
+            <label style="color:var(--rose)">g(x) =</label>
+            <input id="gg" value="x^2 - 4" autocomplete="off">
+          </div>
+          <div class="input-field">
+            <label style="color:var(--emerald)">h(x) =</label>
+            <input id="gh" value="1 / (x - 1)" autocomplete="off">
+          </div>
+        </div>
+        <p class="err" id="gerr" role="status"></p>
+        <canvas id="cv"></canvas>
+        <div class="legend">
+          <div class="legend-item"><div class="legend-dot" style="background:var(--blue)"></div> f(x)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--rose)"></div> g(x)</div>
+          <div class="legend-item"><div class="legend-dot" style="background:var(--emerald)"></div> h(x)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- KALKULATOR VIEW -->
+    <section id="kalk" class="view">
+      <div class="section-header">
+        <h2>Kalkulator Komposisi</h2>
+        <p>Hitung evaluasi nilai fungsi secara mendetail</p>
+      </div>
+
+      <div class="panel">
+        <div class="row-inputs">
+          <div class="input-field">
+            <label>f(x) =</label>
+            <input id="kf" value="2x + 1" autocomplete="off">
+          </div>
+          <div class="input-field">
+            <label>g(x) =</label>
+            <input id="kg" value="x^2 - 3" autocomplete="off">
+          </div>
+          <div class="input-field">
+            <label>h(x) =</label>
+            <input id="kh" value="3x" autocomplete="off">
+          </div>
+          <div class="input-field">
+            <label>Nilai Evaluasi (x)</label>
+            <input id="kx" type="number" value="2">
+          </div>
+        </div>
+        <p class="err" id="kerr" role="status"></p>
+
+        <h3 style="font-size:15px; margin-top:16px;">Hasil Komposisi 2 Fungsi</h3>
+        <div class="grid-results" id="out2"></div>
+
+        <h3 style="font-size:15px; margin-top:20px;">Hasil Komposisi 3 Fungsi</h3>
+        <div class="grid-results" id="out3"></div>
+      </div>
+    </section>
+
+    <!-- SOAL VIEW -->
+    <section id="soal" class="view">
+      <div class="section-header">
+        <h2>Latihan Soal Mandiri</h2>
+        <p>Buka pembahasan untuk mencocokkan jawabanmu</p>
+      </div>
+
+      <details>
+        <summary>1. Diketahui f(x) = 2x + 3 dan g(x) = x² - 1. Tentukan (f ∘ g)(2).</summary>
+        <p><b>Jawaban:</b><br>Hitung g(2) = 2² - 1 = 3.<br>Maka f(g(2)) = f(3) = 2(3) + 3 = <b>9</b>.</p>
+      </details>
+
+      <details>
+        <summary>2. Cari titik puncak parabola dari fungsi f(x) = x² - 4x + 3.</summary>
+        <p><b>Jawaban:</b><br>Xp = -b/(2a) = -(-4)/2 = 2.<br>Yp = f(2) = 2² - 4(2) + 3 = <b>-1</b>.<br>Titik Puncak = <b>(2, -1)</b>.</p>
+      </details>
+    </section>
+
+    <!-- ADMIN VIEW (Khusus Admin) -->
+    <section id="admin" class="view">
+      <div class="section-header">
+        <h2>Panel Manajemen Admin / Guru</h2>
+        <p>Fitur khusus pengawasan dan kelola konten pembelajaran</p>
+      </div>
+
+      <div class="panel">
+        <h3>Statistik Penggunaan</h3>
+        <p>• Total Siswa Aktif: <b>128 Siswa</b></p>
+        <p>• Soal Paling Banyak Dilihat: <b>Komposisi Fungsi</b></p>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+// 1. KELOLA LOADING SCREEN
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const loader = $('loading-screen');
+    loader.classList.add('fade-out');
+  }, 600); // Tampil loading selama 0.6 detik
+});
+
+// 2. LOGIKA LOGIN & ROLE
+let currentRole = 'siswa';
+
+function setRole(role) {
+  currentRole = role;
+  document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+  
+  if(role === 'siswa') {
+    document.querySelectorAll('.role-btn')[0].classList.add('active');
+    $('label-username').textContent = 'NISN / Username Siswa';$('username').placeholder = 'Masukkan NISN / Nama';
+  } else {
+    document.querySelectorAll('.role-btn')[1].classList.add('active');
+    $('label-username').textContent = 'NIP / Username Admin';$('username').placeholder = 'Masukkan ID Admin / Guru';
+  }
+}
+
+function handleLogin(e) {
+  e.preventDefault();
+  const user = $('username').value.trim();
+  const pass = $('password').value.trim();
+  const err = $('login-err');
+
+  // Validasi login sederhana
+  if (user && pass) {
+    err.textContent = '';
+    $('login-screen').style.display = 'none';$('app-screen').style.display = 'block';
+
+    // Set UI Berdasarkan Role
+    $('user-badge').textContent = currentRole === 'admin' ? 'Admin / Guru' : 'Siswa';$('welcome-msg').textContent = `Selamat Datang, ${user}!`;
+
+    // Tampilkan/Sembunyikan Menu Admin
+    document.querySelectorAll('.admin-only').forEach(el => {
+      el.style.display = currentRole === 'admin' ? 'inline-block' : 'none';
+    });
+
+    show('dash');
+  } else {
+    err.textContent = 'Harap isi Username dan Kata Sandi.';
+  }
+}
+
+function handleLogout() {
+  $('app-screen').style.display = 'none';$('login-screen').style.display = 'flex';
+  $('username').value = '';$('password').value = '';
+}
+
+// 3. NAVIGASI DASHBOARD
+function show(v) {
+  document.querySelectorAll('.view').forEach(e => e.classList.toggle('on', e.id === v));
+  document.querySelectorAll('nav button').forEach(b => b.setAttribute('aria-current', b.dataset.v === v));
+  if (v === 'grafik') draw();
+  if (v === 'kalk') calc();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+document.querySelectorAll('nav button').forEach(b => b.onclick = () => show(b.dataset.v));
+document.querySelectorAll('[data-go]').forEach(b => b.onclick = () => show(b.dataset.go));
+
+// 4. PARSER DAN CANVAS GRAFIK
+function mk(s) {
+  if (!s || typeof s !== 'string') return null;
+  let parsed = s.toLowerCase().trim()
+    .replace(/\s+/g, '')
+    .replace(/\^/g, '**')
+    .replace(/,/g, '.')
+    .replace(/(\d)(x|\()/g, '$1*$2')
+    .replace(/x(\d|\()/g, 'x*$1')     .replace(/\)(x|\d|\()/g, ')*$1');
+
+  if (!parsed || !/^[0-9x+\-*/().Mathsincostanlogsqrt]+$/.test(parsed)) return null;
+
+  try {
+    const f = new Function('x', 'return ' + parsed);
+    return isFinite(f(1)) || isNaN(f(1)) ? f : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+const fmt = n => Math.abs(n) < 1e-9 ? '0' : String(+n.toFixed(2));
+
+function draw() {
+  const fs = [['gf', '--blue'], ['gg', '--rose'], ['gh', '--emerald']];
+  const c = $('cv'), dpr = window.devicePixelRatio || 1;
+  const W = c.clientWidth, H = c.clientHeight;
+  c.width = W * dpr; c.height = H * dpr;
+  const ctx = c.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  const st = getComputedStyle(document.documentElement);
+  const R = 10;
+  const sx = W / (2 * R), sy = H / (2 * R);
+
+  ctx.clearRect(0, 0, W, H);
+
+  // Garis Grid
+  ctx.lineWidth = 1;
+  ctx.strokeStyle = st.getPropertyValue('--border');
+  ctx.beginPath();
+  for (let i = -R; i <= R; i++) {
+    ctx.moveTo(W / 2 + i * sx, 0); ctx.lineTo(W / 2 + i * sx, H);
+    ctx.moveTo(0, H / 2 - i * sy); ctx.lineTo(W, H / 2 - i * sy);
+  }
+  ctx.stroke();
+
+  // Sumbu Utama
+  ctx.strokeStyle = st.getPropertyValue('--ink-primary');
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(W / 2, 0); ctx.lineTo(W / 2, H);
+  ctx.moveTo(0, H / 2); ctx.lineTo(W, H / 2);
+  ctx.stroke();
+
+  let bad = [];
+  fs.forEach(([id, colVar]) => {
+    const fn = mk($(id).value);
+    if (!fn) { bad.push(id.slice(1) + '(x)'); return; }
+
+    ctx.strokeStyle = st.getPropertyValue(colVar);
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    let pen = false;
+
+    for (let px = 0; px <= W; px += 2) {
+      const X = (px - W / 2) / sx;
+      let Y;
+      try { Y = fn(X); } catch (e) { Y = NaN; }
+
+      if (!isFinite(Y) || isNaN(Y) || Math.abs(Y) > R * 4) {
+        pen = false;
+        continue;
+      }
+
+      const py = H / 2 - Y * sy;
+      if (pen) ctx.lineTo(px, py); else ctx.moveTo(px, py);
+      pen = true;
+    }
+    ctx.stroke();
+  });
+
+  $('gerr').textContent = bad.length ? 'Persamaan ' + bad.join(', ') + ' tidak dapat dibaca.' : '';
+}
+
+function calc() {
+  const F = {}; let bad = [];
+  ['f', 'g', 'h'].forEach(k => {
+    const fn = mk($('k' + k).value);
+    fn ? F[k] = fn : bad.push(k + '(x)');
+  });
+
+  $('kerr').textContent = bad.length ? 'Persamaan ' + bad.join(', ') + ' tidak dapat dihitung.' : '';
+  if (bad.length) return;
+
+  const X = parseFloat($('kx').value);
+
+  const make = names => {
+    const fn = v => names.split('').reduceRight((a, k) => F[k](a), v);
+    const lbl = '(' + names.split('').join(' ∘ ') + ')(x)';
+    let val;
+    try {
+      const res = fn(X);
+      val = isFinite(res) && !isNaN(res) ? fmt(res) : 'Tak Terdefinisi';
+    } catch (e) {
+      val = 'Error';
+    }
+    return `
+      <div class="res-card">
+        <small>${lbl}</small>
+        <b>Hasil = ${val}</b>
+      </div>
+    `;
+  };
+
+  $('out2').innerHTML = ['fg', 'gf', 'fh', 'hf', 'gh', 'hg'].map(make).join('');$('out3').innerHTML = ['fgh', 'fhg', 'gfh', 'ghf', 'hfg', 'hgf'].map(make).join('');
+}
+
+// Event Listeners
+['gf', 'gg', 'gh'].forEach(i => $(i).oninput = draw);
+['kf', 'kg', 'kh', 'kx'].forEach(i => $(i).oninput = calc);
+window.addEventListener('resize', () => { if ($('grafik').classList.contains('on')) draw(); });
+</script>
+</body>
+</html>
